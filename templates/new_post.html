@@ -1,0 +1,46 @@
+<!-- This is to construct the navbar and update the active state to whatever
+     page it is on. -->
+<head>
+  <div class="navbar">
+    <a href="home"><i class="fa fa-fw fa-home"></i> Home</a>
+    <a href="profile"><i class="fa fa-fw fa-user"></i> Profile</a>
+    <a href="settings"><i class="fa fa-fw fa-gears"></i> Settings</a>
+    <a class="split" href="logout"><i class="fa fa-fw fa-sign-out"></i> Log out</a>
+    <a class="splitb">Welcome, {{ name }}</a>
+  </div>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+{% extends 'base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}
+New Post
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="{{url_for('.static', filename='signin.css')}}">
+{% endblock %}
+
+{% block content %}
+
+<body>
+  <title>New Post</title>
+  <div class="container">
+
+    <form class="form-signin" method="POST" enctype="multipart/form-data" action="/new_post">
+      <h2 class="form-signin-heading">New Post</h2>
+      {{ form.hidden_tag() }}
+      {{ wtf.form_field(form.file) }}
+      {{ wtf.form_field(form.caption) }}
+      {{ wtf.form_field(form.itemCategory) }}
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Post!</button>
+    </form>
+
+  </div> <!-- /container -->
+</body>
+
+{% endblock %}

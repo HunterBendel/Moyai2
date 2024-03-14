@@ -1,0 +1,23 @@
+<!-- This is to construct the navbar and update the active state to whatever
+     page it is on. -->
+<head>
+  <div class="navbar">
+    <a href="home"><i class="fa fa-fw fa-home"></i> Home</a>
+    <a href="profile"><i class="fa fa-fw fa-user"></i> Profile</a>
+    <a class="active" href="settings"><i class="fa fa-fw fa-gears"></i> Settings</a>
+    <a class="split" href="logout"><i class="fa fa-fw fa-sign-out"></i> Log out</a>
+    <a class="splitb">Welcome, {{ name }}</a>
+  </div>
+</head>
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+<body>
+
+    <a class="btn btn-lg btn-primary btn-block" href="change_password" role="button">Change password</a>
+    <button onclick="window.location.href='about';">About</button>
+</body>
+
+{% endblock %}

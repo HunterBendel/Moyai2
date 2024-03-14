@@ -1,0 +1,49 @@
+<!-- This is to construct the navbar and update the active state to whatever
+     page it is on. -->
+<head>
+  <div class="navbar">
+    <a class="active" href="home"><i class="fa fa-fw fa-home"></i> Home</a>
+    <a href="profile"><i class="fa fa-fw fa-user"></i> Profile</a>
+    <a href="settings"><i class="fa fa-fw fa-gears"></i> Settings</a>
+    <a class="split" href="logout"><i class="fa fa-fw fa-sign-out"></i> Log out</a>
+    <a class="splitb">Welcome, {{ name }}</a>
+  </div>
+</head>
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+<body>
+  <title>Home</title>
+  <p>Want to sell your own stuff?</p>
+  <button onclick="window.location.href='new_post';">Make a post!</button>
+  <hr>
+  <input style="float: right; margin-left: 10px" type="button" value="Search"/>
+  <input style="float: right" type="search"/>
+  <h1>Posts:</h1>
+  <ul>
+
+    <!--Runs through every item in the list and displys them-->
+    <!--post[0]: The username of the person-->
+    <!--post[1]: The caption/message user wants to display-->
+    <!--post[2]: The date the post was made-->
+    <!--post[3]: Alternate text for image-->
+    {% for post in all_data%}
+    <p1 style="font-size:25px">{{post[1]}}</p1>
+    <p2>{{post[5]}}</p2>
+    <br>
+    <img style="float:left;"
+         src="data:image/png;charset=utf-8;base64,{{post[2]}}"
+         alt="{{post[4]}}"
+         width="125px"><br clear="all"/>
+    <p>{{post[3]}}</p>
+    <br><br>
+    {% endfor %}
+
+   </ul>
+</body>
+
+{% endblock %}
+
+

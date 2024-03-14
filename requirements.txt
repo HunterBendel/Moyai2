@@ -1,0 +1,4 @@
+Flask
+Flask-Testing
+nose
+flask-change-password>=0.0.7

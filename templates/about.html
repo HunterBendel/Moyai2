@@ -1,0 +1,20 @@
+<head>
+    <div class="navbar">
+      <a href="home"><i class="fa fa-fw fa-home"></i> Home</a>
+      <a href="profile"><i class="fa fa-fw fa-user"></i> Profile</a>
+      <a href="settings"><i class="fa fa-fw fa-gears"></i> Settings</a>
+      <a class="split" href="logout"><i class="fa fa-fw fa-sign-out"></i> Log out</a>
+      <a class="splitb">Welcome, {{ name }}</a>
+    </div>
+  </head>
+  
+  {% extends 'base.html' %}
+  
+  {% block content %}
+  <h1>About Daddy's Marketplace</h1>
+  <h2>Daddy's Marketplace was created as an online marketplace for selling and buying
+    old, new, and unwanted goods.
+  </h2>
+  <h2>Users have the ability to create accounts which includes email validaton.
+     They then can list old and unwanted goods for sale. </h2>
+  {% endblock %}

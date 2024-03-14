@@ -1,0 +1,34 @@
+{% include 'navbar.html' %}
+<head>
+    <meta charset="UTF-8">
+    <title>Daddy's Marketplace</title>
+    <script src="https://unpkg.com/tko/dist/tko.es6.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <div class="navbar">
+      <a href="/home"><i class="fa fa-fw fa-home"></i> Home</a>
+      <a href="/profile"><i class="fa fa-fw fa-user"></i> Profile</a>
+      <a class="active" href="/settings"><i class="fa fa-fw fa-gears"></i> Settings</a>
+      <a class="split" href="/logout"><i class="fa fa-fw fa-sign-out"></i> Log out</a>
+      <a class="splitb">Welcome, {{ name }}</a>
+    </div>
+    <h1 align="center">Daddy's Marketplace</h1>
+    <img src=https://i.ytimg.com/vi/quI772XuCpo/maxresdefault.jpg
+          alt="Ryan Reynolds"
+          style="width:25%">
+</head>
+<body>
+<hr>
+
+{% block app_content %}
+    <h1>Password {{ title }}</h1>
+    <h3>New password is:</h3>
+    <p>{{ new_password }}</p>
+
+    <form action="/settings">
+        <input type="submit" value="Back to settings" />
+    </form>
+
+
+{% endblock %}
+
+</body>
