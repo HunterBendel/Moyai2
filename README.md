@@ -1,2 +1,2 @@
 # Moyai
-The repository for our CPSC 491 project
+The repository for our CPSC 491
