@@ -95,32 +95,36 @@ def settings():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-	form = LoginForm()
+    form = LoginForm()
 
-	if form.validate_on_submit():
-		user = User.query.filter_by(username=form.username.data).first()
-		if user:
-			if check_password_hash(user.password, form.password.data):
-				login_user(user, remember=form.remember.data)
-				return redirect(url_for('home'))
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user:
+            if check_password_hash(user.password, form.password.data):
+                login_user(user, remember=form.remember.data)
+                return redirect(url_for('home'))
 
-		return '<h1>Invalid username or password</h1>'
+        return '<h1>Invalid username or password</h1>'
 
-	return render_template('login_page.html', form=form)
+    return render_template('login_page.html', form=form)
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
-	form = RegisterForm()
+    form = RegisterForm()
 
-	if form.validate_on_submit():
-		hashed_password = generate_password_hash(form.password.data, method='sha256')
-		new_user = User(first=form.first.data, last=form.last.data, username=form.username.data, email=form.email.data, password=hashed_password)
-		db.session.add(new_user)
-		db.session.commit()
+    if form.validate_on_submit():
+        existing_user = User.query.filter_by(username=form.username.data).first()
+        if existing_user:
+            return '<h1>Username already exists. Please choose a different username.</h1>'
 
-		return '<h1>New user has been created!</h1><p>You may now <a class="btn btn-lg btn-primary btn-block" href="login" role="button">Log in</a></p>'
+        hashed_password = generate_password_hash(form.password.data, method='pbkdf2:sha256') # Update the method argument to 'pbkdf2:sha256'
+        new_user = User(first=form.first.data, last=form.last.data, username=form.username.data, email=form.email.data, password=hashed_password)
+        db.session.add(new_user)
+        db.session.commit()
 
-	return render_template('signup_page.html', form=form)
+        return '<h1>New user has been created!</h1><p>You may now <a class="btn btn-lg btn-primary btn-block" href="login" role="button">Log in</a></p>'
+
+    return render_template('signup_page.html', form=form)
 
 @app.route('/changed/<title>/<new_password>')
 @login_required
@@ -135,7 +139,7 @@ def page_change_password():
     if form.validate_on_submit():
         valid = flask_change_password.verify_password_change_form(form)
         if valid:
-            hashed_password = generate_password_hash(form.password.data, method='sha256')
+            hashed_password = generate_password_hash(form.password.data, method='pbkdf2:sha256')
             current_user.password = hashed_password
             db.session.commit()
             return redirect(url_for('page_changed', title='changed', new_password=form.password.data))
