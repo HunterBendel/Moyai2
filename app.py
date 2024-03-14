@@ -17,7 +17,7 @@ from werkzeug.utils import secure_filename
 
 app = Flask(__name__)  # Create application object
 app.config['SECRET_KEY'] = 'This is my super secret key'
-db_path = os.path.join(os.path.dirname(__file__), 'user_data.db')
+db_path = os.path.join(os.path.dirname(__file__), 'database.db')
 db_uri = 'sqlite:///{}'.format(db_path)
 app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
 Bootstrap(app)
@@ -40,26 +40,10 @@ class User(UserMixin, db.Model):
     first = db.Column(db.String(80))
     last = db.Column(db.String(80))
 
-#Do not use this table. it is not the implementation of the post table
-#The post Table was added via command line and is probably different
-class Post(db.Model):
-    __tablename__ = "post"
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String, db.ForeignKey('user.username'))
-    file = db.Column(db.String)
-    caption = db.Column(db.String(256))
-    itemCategory = db.Column(db.String(50))
-    date = db.Column(db.String)
-
 
 @login_manager.user_loader
 def load_user(user_id):
 	return User.query.get(int(user_id))
-
-class PostForm(FlaskForm):
-    file = FileField('image')
-    caption = StringField('caption', validators=[InputRequired(), Length(min=4, max=256)])
-    itemCategory = StringField('item category', validators=[InputRequired(), Length(min=4, max=15)])
 
 class LoginForm(FlaskForm):
 	username = StringField('username', validators=[InputRequired(), Length(min=4, max=15)])
@@ -80,8 +64,7 @@ def index():
 @app.route('/home')
 @login_required
 def home():
-    data = getPostData()
-    return render_template('home_page.html', name=current_user.username, all_data = data)
+    return render_template('home_page.html', name=current_user.username)
 
 @app.route('/profile')
 @login_required
@@ -150,20 +133,6 @@ def page_change_password():
                            user=dict(username=current_user.username),
                            )
 
-@app.route('/new_post', methods=['GET', 'POST'])
-@login_required
-def new_post():
-    title = 'New Post'
-    form = PostForm()
-    if form.validate_on_submit():
-        new_post = Post(username=current_user.username, file=base64.b64encode(form.file.data.read()).decode("UTF-8"), caption=form.caption.data, itemCategory=form.itemCategory.data, date=datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-        db.session.add(new_post)
-        db.session.commit()
-        return redirect(url_for('home'))
-
-    return render_template('new_post.html', form=form, name=current_user.username)
-
-#Matthew
 @app.route('/about')
 @login_required
 def about():
@@ -175,31 +144,6 @@ def about():
 def logout():
 	logout_user()
 	return redirect(url_for('index'))
-
-def getPostData():
-    database = sqlite3.connect("user_data.db")
-    cursor = database.cursor()
-
-    #If you want to quickly enter stuff into the database uncomment a line below and follow same format
-    #It goes Username, caption of image, date entered, alt text for image
-    #if you want the items to stay in database uncomment the commit line
-    #Important please comment/remove lines when you no longer want to add stuff
-    #Removing duplicate posts in the table would be a hassle
-
-    #cursor.execute("INSERT INTO Post VALUES ('Methuselah Honeysuckle','If anyone needs a bunch of notebooks I accidently got too many', '10/31/22','notebooks')")
-    #cursor.execute("INSERT INTO Post VALUES ('11lb. Black Forest Ham','Got a bunch of free clothes for anyone wanting some. DM me if interested', '11/4/22','clothes')")
-    #database.commit()
-
-    cursor.execute("SELECT * FROM Post")
-    post_data = cursor.fetchall()
-    print("HOWDY HOWDY HOWDY")
-    
-    #for row in post_data:
-        #print(row)
-
-    reverse = post_data[::-1]
-
-    return reverse
 
 if __name__ == '__main__':
 	app.run(debug=True)  # Run our application

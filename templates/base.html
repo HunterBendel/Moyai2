@@ -5,6 +5,7 @@
 <html>
 <head>
     {% include 'navbar.html' %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='footer.css') }}">
 </head>
    <body>
       <h1 align="center">Moyai</h1>
@@ -14,7 +15,9 @@
       <hr>
   </body>
 
-  <!-- <script type='text/javascript' src="{{url_for('static', filename='js/home_page.js')}}"></script> -->
+  <footer>
+    <p>&copy; 2024 Moyai App. All rights reserved.</p>
+</footer>
 
 </html>
 
