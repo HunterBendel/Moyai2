@@ -15,33 +15,44 @@
 {% block content %}
 
 <body>
+  <link rel="stylesheet" href="style.css">
   <title>Home</title>
-  <p>Want to sell your own stuff?</p>
-  <button onclick="window.location.href='new_post';">Make a post!</button>
-  <hr>
-  <input style="float: right; margin-left: 10px" type="button" value="Search"/>
-  <input style="float: right" type="search"/>
-  <h1>Posts:</h1>
-  <ul>
+  <main>
+      <section id="search">
+          <h2>Find Your Game</h2>
+          <input type="text" id="game-search" placeholder="Search for games...">
+          <button onclick="searchGames()">Search</button>
+      </section>
 
-    <!--Runs through every item in the list and displys them-->
-    <!--post[0]: The username of the person-->
-    <!--post[1]: The caption/message user wants to display-->
-    <!--post[2]: The date the post was made-->
-    <!--post[3]: Alternate text for image-->
-    {% for post in all_data%}
-    <p1 style="font-size:25px">{{post[1]}}</p1>
-    <p2>{{post[5]}}</p2>
-    <br>
-    <img style="float:left;"
-         src="data:image/png;charset=utf-8;base64,{{post[2]}}"
-         alt="{{post[4]}}"
-         width="125px"><br clear="all"/>
-    <p>{{post[3]}}</p>
-    <br><br>
-    {% endfor %}
+      <section id="recommendations">
+          <h2>Recommended Games</h2>
+          <div id="recommended-games">
+              <!-- Recommended games will be displayed here -->
+          </div>
+      </section>
 
-   </ul>
+      <section id="news">
+          <h2>Latest Gaming News</h2>
+          <div id="gaming-news">
+              <!-- Latest gaming news will be displayed here -->
+          </div>
+      </section>
+  </main>
+
+  <footer>
+    <style> footer {
+      background-color: #555;
+      color: #fff;
+      text-align: center;
+      padding: 10px 0;
+      position: fixed;
+      width: 100%;
+      bottom: 0;
+  }</style>
+      <p>&copy; 2024 Moyai App. All rights reserved.</p>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 
 {% endblock %}
